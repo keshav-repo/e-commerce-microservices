@@ -1,3 +1,5 @@
+## Services in E commerce system 
+
 In an e-commerce platform, there are typically several microservices that work together to provide various functionalities. Here are some examples of microservices commonly found in an e-commerce platform:
 
 1. Product Catalog Service:
@@ -149,7 +151,50 @@ In a Product Catalog Service for an e-commerce platform, various REST APIs can b
 
 These are just a few examples of the REST APIs that can be implemented for a Product Catalog Service. The actual endpoints, request/response structures, and data fields may vary based on the specific requirements and design of your e-commerce platform.
 
+## Order Service
+In an Amazon-like e-commerce system, the Order Service typically exposes a set of REST APIs to handle various operations related to order management. Here is a list of REST APIs that could be used in an Order Service:
 
+1. Create Order:
+   - Endpoint: POST /orders
+   - Description: Creates a new order with the provided order details, such as customer information, products, quantities, and payment details.
+
+2. Get Order Details:
+   - Endpoint: GET /orders/{orderId}
+   - Description: Retrieves the details of a specific order based on the given orderId.
+
+3. Update Order:
+   - Endpoint: PUT /orders/{orderId}
+   - Description: Updates the details of a specific order, such as customer information, shipping address, or payment details.
+
+4. Cancel Order:
+   - Endpoint: DELETE /orders/{orderId}
+   - Description: Cancels a specific order and updates its status accordingly. The order may need to meet certain conditions for cancellation eligibility.
+
+5. Get Order History:
+   - Endpoint: GET /orders/history/{customerId}
+   - Description: Retrieves the order history for a specific customer. This API provides a list of orders previously placed by the customer.
+
+6. Get Order Tracking:
+   - Endpoint: GET /orders/{orderId}/tracking
+   - Description: Retrieves the tracking information of a specific order, such as the shipping carrier, tracking number, and delivery status.
+
+7. Get Order Payments:
+   - Endpoint: GET /orders/{orderId}/payments
+   - Description: Retrieves the payment details associated with a specific order, including payment method, transaction ID, and amount.
+
+8. Get Order Invoice:
+   - Endpoint: GET /orders/{orderId}/invoice
+   - Description: Retrieves the invoice for a specific order, which includes a breakdown of costs, taxes, and any discounts applied.
+
+9. Get Order Shipping Details:
+   - Endpoint: GET /orders/{orderId}/shipping
+   - Description: Retrieves the shipping details associated with a specific order, such as the shipping address, estimated delivery date, and shipping method.
+
+10. Place Order Review:
+    - Endpoint: POST /orders/{orderId}/reviews
+    - Description: Allows a customer to submit a review or rating for a completed order.
+
+These are just some examples of REST APIs that could be used in an Order Service for an e-commerce system like Amazon. The specific endpoints and functionalities may vary based on the requirements and design of the application.
 
 
 
