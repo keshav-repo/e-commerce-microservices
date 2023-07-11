@@ -45,7 +45,9 @@
 - orderTotal: The total amount of the order.
 - message: A message indicating the successful creation of the order.
 
-2. 
+2. Get Order Details:
+
+
 
 
 

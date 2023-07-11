@@ -1,0 +1,28 @@
+server:
+  port: 8300
+
+spring:
+  application:
+    name: Order Service
+  datasource:
+    url: jdbc:h2:mem:orderdb
+    username: SA
+  jpa:
+    defer-datasource-initialization: true
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+  h2:
+    console:
+      enabled: true
+  kafka:
+    bootstrap-servers: localhost:9092
+    template:
+      default-topic: orders-topic
+
+logging:
+  pattern:
+  level:
+    org.hibernate.orm.jdbc.bind: trace
