@@ -5,7 +5,7 @@ spring:
   application:
     name: Inventory Service
   datasource:
-    url: jdbc:h2:mem:test
+    url: jdbc:h2:mem:inventory_db
     username: SA
   jpa:
     defer-datasource-initialization: true
@@ -17,8 +17,16 @@ spring:
   h2:
     console:
       enabled: true
+  kafka:
+    bootstrap-servers: localhost:9092
+    template:
+      default-topic: orders-topic
+
 logging:
   pattern:
   level:
     org.hibernate.orm.jdbc.bind: trace
+
+
+
 
