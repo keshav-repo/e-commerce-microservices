@@ -116,6 +116,11 @@ public class OrderServiceImpl implements OrderService {
         return orderInfoRes;
     }
 
+    /**
+     *
+     * @param orderId
+     * @return OrderStatus
+     */
     @Override
     public OrderStatus orderPlaced(int orderId) {
         // some logic for order placed
