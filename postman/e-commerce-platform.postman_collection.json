@@ -1,0 +1,255 @@
+{
+	"info": {
+		"_postman_id": "01c209d9-42b0-4530-a3ac-e3e8f92e8a80",
+		"name": "e-commerce-platform",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2601330"
+	},
+	"item": [
+		{
+			"name": "inventory-service",
+			"item": [
+				{
+					"name": "Get Inventory",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8200/inventory/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8200",
+							"path": [
+								"inventory",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Adjust Inventory",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"quantity\": -10,\r\n  \"adjustmentType\": \"ADD\",\r\n  \"reason\": \"New stock received\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8200/inventory/2/adjust",
+							"host": [
+								"localhost"
+							],
+							"port": "8200",
+							"path": [
+								"inventory",
+								"2",
+								"adjust"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "catalog-service",
+			"item": [
+				{
+					"name": "CATALOG_fetch_all_product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8100/api/product",
+							"host": [
+								"localhost"
+							],
+							"port": "8100",
+							"path": [
+								"api",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CATALOG_fetch_particular_product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8100/api/product/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8100",
+							"path": [
+								"api",
+								"product",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CATALOG_add_one_product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n       \"id\": 3,\r\n       \"name\": \"Product 3\",\r\n       \"description\": \"This is product 3\",\r\n       \"price\": 100.99,\r\n       \"category\": \"Mobile\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8100/api/product",
+							"host": [
+								"localhost"
+							],
+							"port": "8100",
+							"path": [
+								"api",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CATALOG_Update_a_product",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \r\n        \"productId\": 1,\r\n        \"name\": \"Product 1\",\r\n        \"description\": \"This is product 1.\",\r\n        \"price\": 150.99,\r\n        \"category\": \"Electronics\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8100/api/product/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8100",
+							"path": [
+								"api",
+								"product",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CATALOG_delete_a_product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8100/api/product/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8100",
+							"path": [
+								"api",
+								"product",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order-service",
+			"item": [
+				{
+					"name": "Get Order for a particular order id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8300/order/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8300",
+							"path": [
+								"order",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"shippingAddress\": {\r\n    \"name\": \"John Doe\",\r\n    \"addressLine\": \"123 Main Street\",\r\n    \"contactNumber\": \"+1-123-456-7890\"\r\n  },\r\n  \"customerId\": 10,\r\n  \"products\": [\r\n    {\r\n      \"productId\": 1,\r\n      \"quantity\": 20\r\n    },\r\n    {\r\n      \"productId\": 2,\r\n      \"quantity\": 5\r\n    }\r\n  ],\r\n  \"payment\": {\r\n    \"method\": \"Credit Card\",\r\n    \"billingAddress\": \"456 Elm Street\",\r\n    \"cardNumber\": \"************1234\",\r\n    \"cvv\": \"123\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8300/order",
+							"host": [
+								"localhost"
+							],
+							"port": "8300",
+							"path": [
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Place order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8300/order/11/place",
+							"host": [
+								"localhost"
+							],
+							"port": "8300",
+							"path": [
+								"order",
+								"11",
+								"place"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
