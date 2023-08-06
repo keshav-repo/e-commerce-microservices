@@ -1,0 +1,26 @@
+version: '2'
+services:
+  catalog-service:
+    build:
+      context: ./catalog
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - EUREKA_SERVER_URL=http://eureka-service:8761/eureka/
+    container_name: catalog-image
+    networks:
+      - ecommerce-network
+    ports:
+      - 8100:8080
+    depends_on:
+      - eureka-service
+  eureka-service:
+    build:
+      context: ./ServiceDiscovery
+    container_name: eurekaImage
+    ports:
+      - 8761:8761
+    networks:
+      - ecommerce-network
+networks:
+  ecommerce-network:
+    driver: bridge
