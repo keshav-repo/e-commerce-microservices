@@ -21,6 +21,29 @@ services:
       - 8761:8761
     networks:
       - ecommerce-network
+  inventory-service:
+    build:
+      context: ./inventoryservice
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - EUREKA_SERVER_URL=http://eureka-service:8761/eureka/
+      - KAFKA_SERVER=192.168.1.13:9092
+    container_name: inventory-image
+    networks:
+      - ecommerce-network
+    ports:
+      - 8200:8200
+    depends_on:
+      - eureka-service
+
 networks:
   ecommerce-network:
     driver: bridge
+
+volumes:
+  zookeeper_data:
+    driver: local
+  kafka_data:
+    driver: local
+
+
