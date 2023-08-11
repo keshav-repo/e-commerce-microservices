@@ -13,21 +13,26 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepo productRepo;
-
     @Autowired
     private MongoTemplate mongoTemplate;
 
     @Override
     public List<Product> getAllproducts() {
+//        if (type.equals("book")) {
+//            List<Book> books = mongoTemplate.findAll(Book.class);
+//            return books.stream().collect(Collectors.toList());
+//        }
         List<Product> productList = productRepo.findAll();
         return productList;
     }
+
 
     @Override
     public Product findProductById(String productId) {
@@ -45,13 +50,15 @@ public class ProductServiceImpl implements ProductService {
             if (product instanceof Book) {
                 Book book = (Book) product;
                 Author author = book.getAuthor();
-                Query query = new Query();
-                query.addCriteria(Criteria.where("name").is(author.getName()));
-                Author author1 = mongoTemplate.findOne(query, Author.class);
-                if (!Objects.isNull(author1) && author1.getName().equals(author.getName())) {
-                    book.setAuthor(author1);
-                } else {
-                    mongoTemplate.save(author);
+                if (!Objects.isNull(author)) {
+                    Query query = new Query();
+                    query.addCriteria(Criteria.where("name").is(author.getName()));
+                    Author author1 = mongoTemplate.findOne(query, Author.class);
+                    if (!Objects.isNull(author1) && author1.getName().equals(author.getName())) {
+                        book.setAuthor(author1);
+                    } else {
+                        mongoTemplate.save(author);
+                    }
                 }
             }
             productRepo.save(product);

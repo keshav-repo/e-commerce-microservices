@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
+import java.util.Map;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,11 +16,7 @@ public class Book extends Product{
 
     @DBRef
     private Author author;
-    private String language;
-    private String paperback;
-    private String readingAge;
-    private String itemWeight;
-    private String countryOfOrigin;
+    private Map<String, String> specs;
 
 //    public static class BookBuilder extends ProductBuilder{
 //        BookBuilder() {
