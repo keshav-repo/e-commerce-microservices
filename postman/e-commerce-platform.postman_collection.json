@@ -1,9 +1,10 @@
 {
 	"info": {
-		"_postman_id": "01c209d9-42b0-4530-a3ac-e3e8f92e8a80",
+		"_postman_id": "79036312-f10b-4e33-a7df-c2bf074059fa",
 		"name": "e-commerce-platform",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "2601330"
+		"_exporter_id": "2601330",
+		"_collection_link": "https://bold-meteor-728384.postman.co/workspace/test-workspace~f5777c09-da28-4d85-acfb-bcd788ae72b1/collection/2601330-79036312-f10b-4e33-a7df-c2bf074059fa?action=share&creator=2601330&source=collection_link"
 	},
 	"item": [
 		{
