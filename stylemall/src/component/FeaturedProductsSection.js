@@ -1,7 +1,4 @@
 import React from 'react';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 
 function FeaturedProductsSection() {
     const products = [
@@ -31,20 +28,11 @@ function FeaturedProductsSection() {
         }
     ];
 
-    const sliderSettings = {
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-      };
-    
-    console.log(products);
-
-      return (
+    return (
         <section className="featured-products">
           <div className="container">
-            <Slider {...sliderSettings}>
+            <h2 className="section-title">Featured Products</h2>
+            <div className="product-list">
               {products.map(product => (
                 <div className="product-card" key={product.id}>
                   <img src={product.image} alt={product.name} />
@@ -53,7 +41,7 @@ function FeaturedProductsSection() {
                   <button className="btn btn-primary">Add to Cart</button>
                 </div>
               ))}
-            </Slider>
+            </div>
           </div>
         </section>
       );
