@@ -9,10 +9,8 @@ import Footer from './Footer';
 function HomePage() {
     return (
         <div>
-            <Header />
             <BannerCarousel />
             <FeaturedProductsSection />
-            <Footer />
         </div>
     );
 }

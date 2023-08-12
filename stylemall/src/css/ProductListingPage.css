@@ -1,0 +1,28 @@
+/* ProductListingPage.css */
+
+.product-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .product-card {
+    border: 1px solid #ccc;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .product-image {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .product-name {
+    margin-top: 10px;
+  }
+  
+  .product-price {
+    color: #007bff;
+    font-weight: bold;
+  }
+  
