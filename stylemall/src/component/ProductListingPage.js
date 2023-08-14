@@ -1,35 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../css/ProductListingPage.css';
 import ProductCard from './ProductCard';
 import FilterComponent from './FilterComponent';
+import Pagination from './Pagination';
 
 function ProductListingPage() {
-  const products = [
-    {
-        id: 1,
-        name: 'Product 1',
-        image: 'http://0.0.0.0:8080/1.jpg',
-        price: 29.99,
-    },
-    {
-        id: 2,
-        name: 'Product 2',
-        image: 'http://0.0.0.0:8080/10.jpg',
-        price: 39.99,
-    },
-    {
-        id: 3,
-        name: 'Product 3',
-        image: 'http://0.0.0.0:8080/11.jpg',
-        price: 39.99,
-    },
-    {
-        id: 4,
-        name: 'Product 4',
-        image: 'http://0.0.0.0:8080/12.jpg',
-        price: 39.99,
-    }
-  ];
+
+  const [products, setProducts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(3);
+  const productsPerPage = 10;
+
+  const baseUrl = 'http://localhost:8100';
+
+  const paginate = pageNumber => {
+    console.log("page changed");
+    setCurrentPage(pageNumber);
+    const url = `${baseUrl}/api/search?q=kurta&size=${productsPerPage}&page=${pageNumber}`;
+    datafetch(url);
+  }
+
+  const datafetch = (url) => {
+    fetch(url)
+      .then(response => response.json())
+      .then(data => { setProducts(data.list); setTotalPages(data.totalPages) })
+      .catch(error => console.error('Error fetching products:', error));
+  }
+
+  useEffect(() => {
+    const url = `${baseUrl}/api/search?q=kurta&size=${productsPerPage}&page=${currentPage}`;
+    datafetch(url);
+  }, []);
 
   const categories = [
     { id: 1, name: 'Electronics' },
@@ -52,10 +53,11 @@ function ProductListingPage() {
     : products;
 
 
-return (
+  return (
     <div className="product-listing">
       <div className="container">
         <div className="row">
+
           <div className="col-md-3">
             <FilterComponent
               categories={categories}
@@ -63,19 +65,27 @@ return (
               onChange={handleCategoryChange}
             />
           </div>
+
           <div className="col-md-9">
             <div className="product-grid">
-              {filteredProducts.map(product => (
+              {products.map(product => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
           </div>
+
+          <Pagination
+            productsPerPage={productsPerPage}
+            totalProducts={products.length}
+            currentPage={currentPage}
+            paginate={paginate}
+            totalPages={totalPages}
+          />
+
         </div>
       </div>
     </div>
   );
-
-
 
 
 }
