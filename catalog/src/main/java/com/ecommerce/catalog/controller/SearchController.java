@@ -42,7 +42,9 @@ public class SearchController {
 
         List<SearchModel> list = template.find(query, SearchModel.class);
 
-        return new SearchRes(page, size, list);
+        int count = (int) template.count(new Query(criteria), SearchModel.class);
+
+        return new SearchRes(page, size, count / size, list);
     }
 
 }
