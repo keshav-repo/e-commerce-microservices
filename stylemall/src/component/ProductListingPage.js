@@ -3,20 +3,27 @@ import '../css/ProductListingPage.css';
 import ProductCard from './ProductCard';
 import FilterComponent from './FilterComponent';
 import Pagination from './Pagination';
+import { useLocation } from 'react-router-dom';
 
 function ProductListingPage() {
 
   const [products, setProducts] = useState([]);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(3);
   const productsPerPage = 10;
+
+  const location = useLocation();
+  const searchQuery = new URLSearchParams(location.search).get('search');
+
+  console.log(searchQuery);
+
 
   const baseUrl = 'http://localhost:8100';
 
   const paginate = pageNumber => {
     console.log("page changed");
     setCurrentPage(pageNumber);
-    const url = `${baseUrl}/api/search?q=kurta&size=${productsPerPage}&page=${pageNumber}`;
+    const url = `${baseUrl}/api/search?q=${searchQuery}&size=${productsPerPage}&page=${pageNumber}`;
     datafetch(url);
   }
 
@@ -28,9 +35,15 @@ function ProductListingPage() {
   }
 
   useEffect(() => {
-    const url = `${baseUrl}/api/search?q=kurta&size=${productsPerPage}&page=${currentPage}`;
-    datafetch(url);
-  }, []);
+
+    if(searchQuery){
+      const url = `${baseUrl}/api/search?q=${searchQuery}&size=${productsPerPage}&page=${currentPage}`;
+      datafetch(url);
+    }else{
+      setProducts([]);
+    }
+
+  }, [searchQuery]);
 
   const categories = [
     { id: 1, name: 'Electronics' },

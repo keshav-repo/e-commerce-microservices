@@ -35,16 +35,14 @@ public class SearchController {
                 Criteria.where("tag").in(q)
         );
 
-        Query query = new Query(criteria).with(PageRequest.of(page, size));
-
-        query.addCriteria(Criteria.where("name").regex(q, "i"))
-                .with(PageRequest.of(page, size));
+        Query query = new Query(criteria).with(PageRequest.of(page - 1, size));
 
         List<SearchModel> list = template.find(query, SearchModel.class);
 
         int count = (int) template.count(new Query(criteria), SearchModel.class);
+        int totalPages = count / size + (count % size != 0 ? 1 : 0);
 
-        return new SearchRes(page, size, count / size, list);
+        return new SearchRes(page, list.size(), totalPages, list);
     }
 
 }

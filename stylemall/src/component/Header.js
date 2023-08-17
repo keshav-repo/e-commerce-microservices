@@ -1,4 +1,5 @@
 import React from 'react';
+import Search from './Search';
 
 function Header() {
   return (
@@ -18,10 +19,8 @@ function Header() {
             </li>
           </ul>
         </div>
-        <div className="d-flex align-items-center">
-          <input className="form-control me-2" type="search" placeholder="Search..." aria-label="Search" />
-          <button className="btn btn-primary" type="button">Login</button>
-        </div>
+        
+        <Search/>
       </div>
     </header>
   );
