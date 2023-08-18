@@ -16,7 +16,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = Book.class, name = "book"),
-        @JsonSubTypes.Type(value = Phone.class, name = "phone")
+        @JsonSubTypes.Type(value = Phone.class, name = "phone"),
+        @JsonSubTypes.Type(value = Clothes.class, name = "clothes")
 })
 public class Product {
     @Id

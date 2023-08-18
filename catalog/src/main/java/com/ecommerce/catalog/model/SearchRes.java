@@ -15,5 +15,5 @@ public class SearchRes {
    private int pageNo;
    private int size;
    private int totalPages;
-   private List<SearchModel> list;
+   private List<Product> list;
 }

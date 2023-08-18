@@ -1,7 +1,9 @@
 package com.ecommerce.catalog.controller;
 
 import com.ecommerce.catalog.model.SearchModel;
+import com.ecommerce.catalog.model.SearchReq;
 import com.ecommerce.catalog.model.SearchRes;
+import com.ecommerce.catalog.service.SearchService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -21,28 +23,18 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/search")
 public class SearchController {
+
     @Autowired
-    private MongoTemplate template;
+    private SearchService searchService;
 
     @GetMapping
     public SearchRes search(@RequestParam(required = false) String q,
                             @RequestParam(required = false, defaultValue = "1") int page,
                             @RequestParam(required = false, defaultValue = "10") int size) {
 
-        Criteria criteria = new Criteria().orOperator(
-                Criteria.where("name").regex(q, "i"),
-                Criteria.where("brand").regex(q, "i"),
-                Criteria.where("tag").in(q)
-        );
+        SearchReq searchReq = new SearchReq(q, size, page);
 
-        Query query = new Query(criteria).with(PageRequest.of(page - 1, size));
-
-        List<SearchModel> list = template.find(query, SearchModel.class);
-
-        int count = (int) template.count(new Query(criteria), SearchModel.class);
-        int totalPages = count / size + (count % size != 0 ? 1 : 0);
-
-        return new SearchRes(page, list.size(), totalPages, list);
+        return searchService.search(searchReq);
     }
 
 }

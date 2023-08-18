@@ -10,13 +10,14 @@ function ProductListingPage() {
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(3);
+  //const [searchQuery, setSearchQuery] = useState('');
   const productsPerPage = 10;
 
   const location = useLocation();
-  const searchQuery = new URLSearchParams(location.search).get('search');
-
-  console.log(searchQuery);
-
+  var searchQuery = new URLSearchParams(location.search).get('search');
+  if(searchQuery==null){
+    searchQuery = '';
+  }
 
   const baseUrl = 'http://localhost:8100';
 
@@ -28,18 +29,19 @@ function ProductListingPage() {
   }
 
   const datafetch = (url) => {
+
     fetch(url)
       .then(response => response.json())
-      .then(data => { setProducts(data.list); setTotalPages(data.totalPages) })
+      .then(data => { console.log(data.list);
+        setProducts(data.list); setTotalPages(data.totalPages) })
       .catch(error => console.error('Error fetching products:', error));
   }
 
   useEffect(() => {
-
-    if(searchQuery){
+    if (searchQuery!=null) {
       const url = `${baseUrl}/api/search?q=${searchQuery}&size=${productsPerPage}&page=${currentPage}`;
       datafetch(url);
-    }else{
+    } else {
       setProducts([]);
     }
 
@@ -88,9 +90,6 @@ function ProductListingPage() {
           </div>
 
           <Pagination
-            productsPerPage={productsPerPage}
-            totalProducts={products.length}
-            currentPage={currentPage}
             paginate={paginate}
             totalPages={totalPages}
           />
