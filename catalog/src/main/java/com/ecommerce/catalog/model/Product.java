@@ -25,6 +25,7 @@ public class Product {
     private String name;
     private String description;
     private String category;
+    private String brand;
     private String imgMapping;
     public Product(String name, String description, String category) {
         this.name = name;

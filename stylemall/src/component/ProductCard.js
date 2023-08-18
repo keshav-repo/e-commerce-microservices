@@ -1,13 +1,22 @@
 import React from 'react';
-import '../css/ProductCard.css'; 
+import '../css/ProductCard.css';
 import { Link } from 'react-router-dom';
 
 function ProductCard({ product }) {
+  var imageUrls;
+  if(product && product.imageList){
+    imageUrls = product.imageList.map(url => {
+      const matches = url.match(/"(.*?)"/);
+      return matches ? matches[1] : null; 
+    });
+  }
+  
+
   return (
-    <div className="col-md-3 product-card"> 
+    <div className="col-md-3 product-card">
       <Link to={`/products/${product.id}`}>
         <div className="card">
-          <img src={product.imageList[0]} alt={product.name} className="card-img-top product-image" />
+          <img src={imageUrls ? imageUrls[0]: ''} alt={product.name} className="card-img-top product-image" />
           <div className="card-body">
             <h5 className="card-title product-name">{product.name}</h5>
             <p className="card-text product-price">${product.actualPrice}</p>

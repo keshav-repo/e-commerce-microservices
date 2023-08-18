@@ -26,4 +26,8 @@ db.productCard.aggregate([
     { $group: { _id: null, distinctTags: { $addToSet: "$tags" } } }
   ]);
 
-  
+
+
+db.productDetails.find({ _id: ObjectId("64d9d5176839a72ec7d66b92") })
+ 
+

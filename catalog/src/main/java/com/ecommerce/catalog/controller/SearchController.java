@@ -1,5 +1,6 @@
 package com.ecommerce.catalog.controller;
 
+import com.ecommerce.catalog.model.AutosuggestCriteria;
 import com.ecommerce.catalog.model.SearchModel;
 import com.ecommerce.catalog.model.SearchReq;
 import com.ecommerce.catalog.model.SearchRes;
@@ -33,8 +34,12 @@ public class SearchController {
                             @RequestParam(required = false, defaultValue = "10") int size) {
 
         SearchReq searchReq = new SearchReq(q, size, page);
-
         return searchService.search(searchReq);
+    }
+
+    @GetMapping("/autosuggest")
+    public List<AutosuggestCriteria> autosuggestCriteria(@RequestParam(required = false) String q){
+        return searchService.autosuggest(q);
     }
 
 }

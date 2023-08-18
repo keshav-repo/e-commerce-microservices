@@ -32,7 +32,7 @@ function ProductListingPage() {
 
     fetch(url)
       .then(response => response.json())
-      .then(data => { console.log(data.list);
+      .then(data => { 
         setProducts(data.list); setTotalPages(data.totalPages) })
       .catch(error => console.error('Error fetching products:', error));
   }
@@ -84,7 +84,7 @@ function ProductListingPage() {
           <div className="col-md-9">
             <div className="product-grid">
               {products.map(product => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard key={product.productId} product={product} />
               ))}
             </div>
           </div>

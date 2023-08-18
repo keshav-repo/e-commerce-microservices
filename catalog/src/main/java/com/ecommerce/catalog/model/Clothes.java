@@ -13,7 +13,6 @@ import java.util.Map;
 @AllArgsConstructor
 @Builder
 public class Clothes extends Product{
-    private String brand;
     private String stars;
     private String rating;
     private String disPrice;
