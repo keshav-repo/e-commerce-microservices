@@ -11,6 +11,7 @@ function ProductListingPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(3);
   //const [searchQuery, setSearchQuery] = useState('');
+  const [filters, setFilters] = useState([]);
   const productsPerPage = 10;
 
   const location = useLocation();
@@ -29,23 +30,23 @@ function ProductListingPage() {
   }
 
   const datafetch = (url) => {
-
     fetch(url)
       .then(response => response.json())
       .then(data => {
-        setProducts(data.list); setTotalPages(data.totalPages)
+        setProducts(data.list);
+        setTotalPages(data.totalPages);
+        setFilters(data.filters);
       })
       .catch(error => console.error('Error fetching products:', error));
   }
 
   useEffect(() => {
     if (searchQuery != null) {
-      const url = `${baseUrl}/api/search?q=${searchQuery}&size=${productsPerPage}&page=${currentPage}`;
+      const url = `${baseUrl}/api/search/search-filters?q=${searchQuery}&size=${productsPerPage}&page=${currentPage}`;
       datafetch(url);
     } else {
-      setProducts([]);
+      // setProducts([]);
     }
-
   }, [searchQuery]);
 
   const categories = [
@@ -76,7 +77,7 @@ function ProductListingPage() {
 
           <div className="col-md-3">
             <FilterComponent
-              categories={categories}
+              filters={filters}
               selectedCategories={selectedCategories}
               onChange={handleCategoryChange}
             />

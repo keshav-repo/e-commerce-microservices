@@ -1,18 +1,20 @@
-/* FilterComponent.css */
-
 .filter-component {
-    border: 1px solid #ccc;
-    padding: 10px;
-    background-color: #f5f5f5;
-  }
-  
-  .filter-title {
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
-  
-  .filter-label {
-    display: block;
-    margin-bottom: 5px;
-  }
-  
+  border: 1px solid #ccc;
+  padding: 10px;
+  background-color: #f5f5f5;
+}
+
+.filter-title {
+  font-size: 18px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.filter-label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.checkbox-text {
+  margin-left: 10px;
+}
