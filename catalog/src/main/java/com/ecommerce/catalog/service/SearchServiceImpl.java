@@ -1,22 +1,24 @@
 package com.ecommerce.catalog.service;
 
 import com.ecommerce.catalog.model.*;
+import com.ecommerce.catalog.util.Commonutils;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.BasicQuery;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.GroupOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.*;
 
 @Service
+@Slf4j
 public class SearchServiceImpl implements SearchService {
     @Autowired
     private MongoTemplate template;
@@ -39,6 +41,30 @@ public class SearchServiceImpl implements SearchService {
         return new SearchRes(searchReq.getPage(), list.size(), totalPages, list);
     }
 
+    public List<String> getDistinctValue(String field, String collectionName, Criteria criteria) {
+        GroupOperation groupByBrand = Aggregation.group(field);
+
+        Aggregation aggregation = Aggregation.newAggregation( Aggregation.match(criteria),groupByBrand);
+
+        List<String> distinctvalue = template.aggregate(aggregation, collectionName, String.class)
+                .getMappedResults();
+
+        List<String> distinctvalueRes = new LinkedList<>();
+        ObjectMapper objectMapper = new ObjectMapper();
+        for(String s: distinctvalue){
+            try{
+                JsonNode jsonNode = objectMapper.readTree(s);
+                String idValue = jsonNode.get("_id").asText();
+                distinctvalueRes.add(idValue);
+            }catch ( JsonProcessingException e){
+                log.info("error parsing json");
+            }
+        }
+
+        return distinctvalueRes;
+    }
+
+
     @Override
     public List<AutosuggestCriteria> autosuggest(String q) {
         Criteria criteria = new Criteria().orOperator(
@@ -49,19 +75,30 @@ public class SearchServiceImpl implements SearchService {
         List<Product> productList = template.find(new Query(criteria), Product.class);
         Set<AutosuggestCriteria> criteriaSet = new HashSet<>();
         for (Product product : productList) {
-            if (product.getBrand() != null && isPatternMatch(product.getBrand(), q)) {
+            if (product.getBrand() != null && Commonutils.isPatternMatch(product.getBrand(), q)) {
                 criteriaSet.add(new AutosuggestCriteria("brand", product.getBrand()));
             }
-            if (product.getCategory() != null && isPatternMatch(product.getCategory(), q)) {
+            if (product.getCategory() != null && Commonutils.isPatternMatch(product.getCategory(), q)) {
                 criteriaSet.add(new AutosuggestCriteria("category", product.getCategory() ));
             }
         }
         return new ArrayList<>(criteriaSet);
     }
 
-    private boolean isPatternMatch(String text, String pattern) {
-        Pattern regexPattern = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = regexPattern.matcher(text);
-        return matcher.find();
+    @Override
+    public SearchResWithFilter searchAndFilter(SearchReq searchReq) {
+        SearchRes searchRes = this.search(searchReq);
+
+        Criteria criteria = new Criteria().orOperator(
+                Criteria.where("name").regex(searchReq.getQ(), "i"),
+                Criteria.where("brand").regex(searchReq.getQ(), "i")
+        );
+
+        SearchResWithFilter searchResWithFilter = new SearchResWithFilter(searchRes);
+        Filter filter = new Filter("brand", getDistinctValue("brand", "products", criteria));
+        Filter filter2 = new Filter("category", getDistinctValue("category", "products", criteria));
+        searchResWithFilter.setFilters(List.of(filter, filter2));
+        return searchResWithFilter;
     }
+
 }
