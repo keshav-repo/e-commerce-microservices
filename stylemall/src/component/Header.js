@@ -19,7 +19,6 @@ function Header() {
             </li>
           </ul>
         </div>
-        
         <Search/>
       </div>
     </header>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Pagination({ productsPerPage, totalProducts, currentPage, paginate, totalPages }) {
+function Pagination({ paginate, totalPages }) {
     const pageNumbers = [];
 
     for (let i = 1; i <= Math.min(totalPages, 10); i++) {

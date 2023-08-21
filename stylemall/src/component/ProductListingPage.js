@@ -15,7 +15,7 @@ function ProductListingPage() {
 
   const location = useLocation();
   var searchQuery = new URLSearchParams(location.search).get('search');
-  if(searchQuery==null){
+  if (searchQuery == null) {
     searchQuery = '';
   }
 
@@ -32,13 +32,14 @@ function ProductListingPage() {
 
     fetch(url)
       .then(response => response.json())
-      .then(data => { 
-        setProducts(data.list); setTotalPages(data.totalPages) })
+      .then(data => {
+        setProducts(data.list); setTotalPages(data.totalPages)
+      })
       .catch(error => console.error('Error fetching products:', error));
   }
 
   useEffect(() => {
-    if (searchQuery!=null) {
+    if (searchQuery != null) {
       const url = `${baseUrl}/api/search?q=${searchQuery}&size=${productsPerPage}&page=${currentPage}`;
       datafetch(url);
     } else {

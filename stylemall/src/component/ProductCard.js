@@ -14,7 +14,7 @@ function ProductCard({ product }) {
 
   return (
     <div className="col-md-3 product-card">
-      <Link to={`/products/${product.id}`}>
+      <Link to={`/products/${product.productId}`}>
         <div className="card">
           <img src={imageUrls ? imageUrls[0]: ''} alt={product.name} className="card-img-top product-image" />
           <div className="card-body">
