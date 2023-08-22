@@ -26,23 +26,6 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public SearchRes search(SearchReq searchReq) {
-
-//        List<Criteria> orCriteriaList = new LinkedList<>();
-//        List<Criteria> andCriteriaList = new LinkedList<>();
-//
-//        orCriteriaList.add(Criteria.where("name").regex(searchReq.getQ(), "i"));
-//
-//        if (!Objects.isNull(searchReq.getBrands()) && !searchReq.getBrands().isEmpty()) {
-//            andCriteriaList.add(Criteria.where("brand").in(searchReq.getBrands()));
-//        }else {
-//            orCriteriaList.add(Criteria.where("brand").regex(searchReq.getQ(), "i"));
-//        }
-//
-//        if (!Objects.isNull(searchReq.getCategory()) && !searchReq.getCategory().isEmpty()) {
-//            andCriteriaList.add(Criteria.where("category").in(searchReq.getCategory()));
-//        }
-//        Criteria criteria = new Criteria().orOperator(orCriteriaList).andOperator(andCriteriaList);
-
         Criteria criteria = buildCriteria(searchReq);
 
         Query query = new Query(criteria)
@@ -50,7 +33,7 @@ public class SearchServiceImpl implements SearchService {
 
         List<Product> list = template.find(query, Product.class);
 
-        int count = (int) template.count(new Query(criteria), SearchModel.class);
+        int count = (int) template.count(new Query(criteria), Product.class);
         int totalPages = count / searchReq.getSize() + (count % searchReq.getSize() != 0 ? 1 : 0);
 
         return new SearchRes(searchReq.getPage(), list.size(), totalPages, list);
@@ -101,7 +84,6 @@ public class SearchServiceImpl implements SearchService {
 
         return distinctvalueRes;
     }
-
 
     @Override
     public List<AutosuggestCriteria> autosuggest(String q) {
