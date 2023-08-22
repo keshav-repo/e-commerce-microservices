@@ -3,8 +3,8 @@ import './../css/FilterComponent.css';
 
 function FilterComponent({ filters, onCheckboxChange }) {
 
-    const handleCheckboxChange = (filterName, value) => {
-        onCheckboxChange(filterName, value);
+    const handleCheckboxChange = (filterName, value, isChecked) => {
+        onCheckboxChange(filterName, value, isChecked);
     };
 
     return (
@@ -16,7 +16,7 @@ function FilterComponent({ filters, onCheckboxChange }) {
                         <label className="filter-label" key={id}>
                             <input
                                  type="checkbox" value={value}
-                                 onChange={() => handleCheckboxChange(filter.name, value)}
+                                 onChange={(e) => handleCheckboxChange(filter.name, value, e.target.checked)}
                                 />
                             <span className="checkbox-text">{value}</span>
                         </label>

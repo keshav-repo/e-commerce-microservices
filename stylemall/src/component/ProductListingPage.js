@@ -21,7 +21,7 @@ function ProductListingPage() {
 
   const getInitialUrl = () => {
     var q = new URLSearchParams(location.search).get('search');
-    q = q == null ? '':q
+    q = q == null ? '' : q
     return `${baseUrl}/api/search/search-filters?q=${q}&size=${productsPerPage}&page=${currentPage}`;
   }
 
@@ -34,8 +34,6 @@ function ProductListingPage() {
   }
 
   useEffect(() => {
-    console.log('url is changed');
-    console.log(url);
     fetch(url)
       .then(response => response.json())
       .then(data => {
@@ -56,23 +54,28 @@ function ProductListingPage() {
     setUrl(url);
   }, [location.search]);
 
-  const handleCheckboxChange = (filterName, value) => {
+  const handleCheckboxChange = (filterName, value, isChecked) => {
     var filters = selectedFilters;
-    if(filters[filterName]==null){
-       filters[filterName] = value
-    }else{
-       filters[filterName] = filters[filterName] + ','+value;
+    if (isChecked) {
+      if (filters[filterName] == null) {
+        filters[filterName] = [value];
+      } else {
+        filters[filterName].push(value);
+      }
+    } else {
+      filters[filterName] = filters[filterName].filter(item => item != value);
     }
+
     setSelectedFilters(filters);
 
     var url = `${baseUrl}/api/search?q=${searchQuery}&size=${productsPerPage}&page=${currentPage}`;
-    if( filters['brand'] && filters['brand'].includes(value)){
-      url = url + `&brands=${filters['brand']}`;
+    if (filters['brand']) {
+      url = url + `&brands=${encodeURIComponent(filters['brand'].join(';'))}`;
     }
-    if( filters['category'] && filters['category'].includes(value)){
-      url = url + `&categories=${filters['category']}`;
+    if (filters['category']) {
+      url = url + `&categories=${encodeURIComponent(filters['category'].join(';'))}`;
     }
-    setUrl(url);  
+    setUrl(url);
   };
 
   return (
@@ -100,7 +103,7 @@ function ProductListingPage() {
       </div>
     </div>
   );
-  
+
 }
 
 export default ProductListingPage;
