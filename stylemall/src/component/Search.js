@@ -87,7 +87,7 @@ const Search = ({ onSearch }) => {
                         label=""
                         inputProps={{
                             ...params.inputProps,
-                            style: { height: '10px' } // Adjust the height as needed
+                            style: { height: '10px' }
                         }} 
                      />}
             />
