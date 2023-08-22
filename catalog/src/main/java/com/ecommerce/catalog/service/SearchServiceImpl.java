@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.aggregation.GroupOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 
@@ -26,12 +27,26 @@ public class SearchServiceImpl implements SearchService {
     @Override
     public SearchRes search(SearchReq searchReq) {
 
-        Criteria criteria = new Criteria().orOperator(
-                Criteria.where("name").regex(searchReq.getQ(), "i"),
-                Criteria.where("brand").regex(searchReq.getQ(), "i")
-        );
+//        List<Criteria> orCriteriaList = new LinkedList<>();
+//        List<Criteria> andCriteriaList = new LinkedList<>();
+//
+//        orCriteriaList.add(Criteria.where("name").regex(searchReq.getQ(), "i"));
+//
+//        if (!Objects.isNull(searchReq.getBrands()) && !searchReq.getBrands().isEmpty()) {
+//            andCriteriaList.add(Criteria.where("brand").in(searchReq.getBrands()));
+//        }else {
+//            orCriteriaList.add(Criteria.where("brand").regex(searchReq.getQ(), "i"));
+//        }
+//
+//        if (!Objects.isNull(searchReq.getCategory()) && !searchReq.getCategory().isEmpty()) {
+//            andCriteriaList.add(Criteria.where("category").in(searchReq.getCategory()));
+//        }
+//        Criteria criteria = new Criteria().orOperator(orCriteriaList).andOperator(andCriteriaList);
 
-        Query query = new Query(criteria).with(PageRequest.of(searchReq.getPage() - 1, searchReq.getSize()));
+        Criteria criteria = buildCriteria(searchReq);
+
+        Query query = new Query(criteria)
+                .with(PageRequest.of(searchReq.getPage() - 1, searchReq.getSize()));
 
         List<Product> list = template.find(query, Product.class);
 
@@ -41,22 +56,45 @@ public class SearchServiceImpl implements SearchService {
         return new SearchRes(searchReq.getPage(), list.size(), totalPages, list);
     }
 
+    public Criteria buildCriteria(SearchReq searchReq) {
+        List<Criteria> orCriteriaList = new LinkedList<>();
+        List<Criteria> andCriteriaList = new LinkedList<>();
+
+        orCriteriaList.add(Criteria.where("name").regex(searchReq.getQ(), "i"));
+
+        if (!Objects.isNull(searchReq.getBrands()) && !searchReq.getBrands().isEmpty()) {
+            andCriteriaList.add(Criteria.where("brand").in(searchReq.getBrands()));
+        }
+        orCriteriaList.add(Criteria.where("brand").regex(searchReq.getQ(), "i"));
+
+        if (!Objects.isNull(searchReq.getCategories()) && !searchReq.getCategories().isEmpty()) {
+            andCriteriaList.add(Criteria.where("category").in(searchReq.getCategories()));
+        }
+        Criteria criteria = new Criteria(); // .andOperator(andCriteriaList).orOperator(orCriteriaList);
+        if (!andCriteriaList.isEmpty()) {
+            criteria = criteria.andOperator(andCriteriaList);
+        }
+        criteria = criteria.orOperator(orCriteriaList);
+
+        return criteria;
+    }
+
     public List<String> getDistinctValue(String field, String collectionName, Criteria criteria) {
         GroupOperation groupByBrand = Aggregation.group(field);
 
-        Aggregation aggregation = Aggregation.newAggregation( Aggregation.match(criteria),groupByBrand);
+        Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria), groupByBrand);
 
         List<String> distinctvalue = template.aggregate(aggregation, collectionName, String.class)
                 .getMappedResults();
 
         List<String> distinctvalueRes = new LinkedList<>();
         ObjectMapper objectMapper = new ObjectMapper();
-        for(String s: distinctvalue){
-            try{
+        for (String s : distinctvalue) {
+            try {
                 JsonNode jsonNode = objectMapper.readTree(s);
                 String idValue = jsonNode.get("_id").asText();
                 distinctvalueRes.add(idValue);
-            }catch ( JsonProcessingException e){
+            } catch (JsonProcessingException e) {
                 log.info("error parsing json");
             }
         }
@@ -79,7 +117,7 @@ public class SearchServiceImpl implements SearchService {
                 criteriaSet.add(new AutosuggestCriteria("brand", product.getBrand()));
             }
             if (product.getCategory() != null && Commonutils.isPatternMatch(product.getCategory(), q)) {
-                criteriaSet.add(new AutosuggestCriteria("category", product.getCategory() ));
+                criteriaSet.add(new AutosuggestCriteria("category", product.getCategory()));
             }
         }
         return new ArrayList<>(criteriaSet);
@@ -89,10 +127,7 @@ public class SearchServiceImpl implements SearchService {
     public SearchResWithFilter searchAndFilter(SearchReq searchReq) {
         SearchRes searchRes = this.search(searchReq);
 
-        Criteria criteria = new Criteria().orOperator(
-                Criteria.where("name").regex(searchReq.getQ(), "i"),
-                Criteria.where("brand").regex(searchReq.getQ(), "i")
-        );
+        Criteria criteria = buildCriteria(searchReq);
 
         SearchResWithFilter searchResWithFilter = new SearchResWithFilter(searchRes);
         Filter filter = new Filter("brand", getDistinctValue("brand", "products", criteria));

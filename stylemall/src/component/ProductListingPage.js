@@ -35,7 +35,9 @@ function ProductListingPage() {
       .then(data => {
         setProducts(data.list);
         setTotalPages(data.totalPages);
-        setFilters(data.filters);
+        if(data.filters){
+          setFilters(data.filters);
+        }
       })
       .catch(error => console.error('Error fetching products:', error));
   }
