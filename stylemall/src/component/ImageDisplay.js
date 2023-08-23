@@ -3,7 +3,6 @@ import '../css/ImageDisplay.css';
 
 function ImageDisplay({ imageUrls }) {
 
-  //console.log(iu);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const handleNextImage = () => {
