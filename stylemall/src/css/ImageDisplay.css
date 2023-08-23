@@ -1,0 +1,45 @@
+/* ImageDisplay.css */
+
+.image-display-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .image-container {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    border: 1px solid #ccc; /* Add a border around the image container */
+    background-color: #fff; /* Add white background */
+  }
+  
+  .main-product-image {
+    /* width: 100%; */
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .thumbnail-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+  .thumbnail {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border: 2px solid #ccc;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: border-color 0.3s ease-in-out;
+  }
+  
+  .thumbnail.active {
+    border-color: #f02e58;
+  }
+
+ 

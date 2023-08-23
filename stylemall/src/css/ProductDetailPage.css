@@ -24,3 +24,37 @@
   }
 
   
+  /* Image css  */
+  .product-detail {
+    padding: 20px;
+  }
+  
+  .image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+    overflow: hidden;
+  }
+  
+  .main-product-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+  }
+  
+  .buy-button {
+    background-color: #f02e58;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .buy-button:hover {
+    background-color: #c72047;
+  }  
+
+  /* End of image css */
+  
