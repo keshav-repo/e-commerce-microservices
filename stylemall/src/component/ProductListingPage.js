@@ -33,6 +33,8 @@ function ProductListingPage() {
     setUrl(url);
   }
 
+  
+
   useEffect(() => {
     fetch(url)
       .then(response => response.json())

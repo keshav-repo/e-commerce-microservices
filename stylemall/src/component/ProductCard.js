@@ -11,7 +11,6 @@ function ProductCard({ product }) {
     });
   }
   
-
   return (
     <div className="col-md-3 product-card">
       <Link to={`/products/${product.productId}`}>
